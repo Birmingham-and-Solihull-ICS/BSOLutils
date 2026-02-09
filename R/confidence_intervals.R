@@ -15,17 +15,17 @@
 #'
 #' @examples
 #' prop_ci(50,120)
-prop_ci <- function(o, n, ci=0.95){
+prop_ci <- function(o, n, ci = 0.95){
 
-  z <- qnorm(ci + ((1-ci)/2))
+  z <- qnorm(ci + ((1 - ci)/2))
   p <- o/n
-  q <- 1-p
+  q <- 1 - p
 
-  plower <- ((2*o + z^2) - z * sqrt(z^2 + (4*o*q))) / (2*(n+z^2))
+  plower <- ((2*o + z^2) - z * sqrt(z^2 + (4*o*q))) / (2*(n + z^2))
 
-  pupper <- ((2*o + z^2) + z * sqrt(z^2 + (4*o*q))) / (2*(n+z^2))
+  pupper <- ((2*o + z^2) + z * sqrt(z^2 + (4*o*q))) / (2*(n + z^2))
 
-  return(data.frame(Rate=o/n, LowerCI=plower, UpperCI=pupper))
+  return(data.frame(Rate = o/n, LowerCI = plower, UpperCI = pupper))
 
 }
 
@@ -46,15 +46,15 @@ prop_ci <- function(o, n, ci=0.95){
 #'
 #' @examples
 #' byars_ci(50, 120)
-byars_ci <- function(o, n, ci=0.95){
+byars_ci <- function(o, n, ci = 0.95){
 
-  z <- qnorm(ci + ((1-ci)/2))
+  z <- qnorm(ci + ((1 - ci)/2))
 
   olower <- o * (( 1 - (1/(9*o)) - (z / (3 * sqrt(o))))^3)
 
-  oupper <- (o+1) * (( 1 - (1/(9*(o+1))) + (z / (3 * sqrt((o+1)))))^3)
+  oupper <- (o + 1) * (( 1 - (1/(9*(o + 1))) + (z / (3 * sqrt((o + 1)))))^3)
 
-  return(data.frame(Rate=o/n, LowerCI=olower/n, UpperCI=oupper/n))
+  return(data.frame(Rate = o/n, LowerCI = olower/n, UpperCI = oupper/n))
 
 }
 
@@ -78,14 +78,14 @@ byars_ci <- function(o, n, ci=0.95){
 #' @examples
 #' # For a rate of 50 / 100
 #' exact_SMR_ci(50, 120)
-exact_SMR_ci <- function(o, n, ci=0.95){
+exact_SMR_ci <- function(o, n, ci = 0.95){
 
-  z <- qnorm(ci + ((1-ci)/2))
+  z <- qnorm(ci + ((1 - ci)/2))
 
-  olower <- (qchisq(ci + ((1-ci)/2), (2*o), lower.tail = FALSE)/2)
-  oupper <- (qchisq(1-(ci + ((1-ci)/2)), 2*(o+1), lower.tail = FALSE)/2)
+  olower <- (qchisq(ci + ((1 - ci)/2), (2*o), lower.tail = FALSE)/2)
+  oupper <- (qchisq(1 - (ci + ((1 - ci)/2)), 2*(o + 1), lower.tail = FALSE)/2)
 
-  return(data.frame(Rate=o/n, LowerCI=olower/n, UpperCI=oupper/n))
+  return(data.frame(Rate = o/n, LowerCI = olower/n, UpperCI = oupper/n))
 
 
 }
