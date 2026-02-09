@@ -19,8 +19,8 @@
 #' mod1 <- glm(Death ~ Age * LOS, data=LOS_model, family="binomial")
 #'
 #' disp_ratio(mod1)
-disp_ratio<-function(model, ...){
-  sum(residuals(model, type="pearson")^2) / df.residual(model)
+disp_ratio <- function(model, ...){
+  sum(residuals(model, type = "pearson")^2) / df.residual(model)
 }
 
 
@@ -61,10 +61,10 @@ phi_func <- function(n, zscores){
 #'
 tau_func <- function(n,  phi, S){
 
-  if(length(S) == 0){
+  if (length(S) == 0) {
     Tau2 <- 0
   } else {
-    if((n*phi) < (n - 1)){
+    if ((n*phi) < (n - 1)) {
       Tau2 <- 0
     } else {
 

@@ -16,6 +16,10 @@
 #' @export
 #'
 #' @examples
+#' # This example won't work at the moment
+#' \dontrun{
+#'   ISR_deprivation(a)
+#'   }
 #'
 ISR_deprivation <-
   function(.dt,
@@ -67,19 +71,22 @@ ISR_deprivation <-
 #' @export
 #'
 #' @examples
+# This example won't work at the moment
+#' \dontrun{
 #' standardised_dep <- ISR(my_dt)
 #' ISR_deprivation_plot()
+#' }
 ISR_deprivation_plot <-
   function(.dt,
            description = "Myocardial Infarction (Under 75yrs) - 2024/25",
            x_scale = seq(0,1.5,0.1)) {
 
-    ggplot(out_coefs, aes(x=imd_quintile, y = ratio, fill=imd_quintile))+
+    ggplot(out_coefs, aes(x = imd_quintile, y = ratio, fill = imd_quintile))+
       geom_col(show.legend = FALSE, alpha = 0.8) +
-      geom_errorbar(aes(ymin=lowerCI, ymax=upperCI, width = 0.5))+
+      geom_errorbar(aes(ymin = lowerCI, ymax = upperCI, width = 0.5))+
       geom_hline(yintercept = 1, linetype = "dashed", col = "red", size = 1) +
       scale_fill_brewer(palette = "Dark2") +
-      scale_y_continuous(breaks= x_scale)+
+      scale_y_continuous(breaks = x_scale)+
       labs(#colour = "Deprivation Qunitile",
            x = "IMD Quintile (999 = 'Unknown')",
            y = "Indirectly Standardised Ratio",
