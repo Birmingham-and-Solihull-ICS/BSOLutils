@@ -10,20 +10,20 @@ disp_ratio <- function(model, ...){
 
 
 exact_CI <- function(o, n, ci=0.95){
-  
+
   z <- qnorm(ci + ((1-ci)/2))
-  
+
   olower <- (qchisq(ci + ((1-ci)/2), (2*o), lower.tail = FALSE)/2)
   oupper <- (qchisq(1-(ci + ((1-ci)/2)), 2*(o+1), lower.tail = FALSE)/2)
-  
+
   return(data.frame(Rate=o/n, LowerCI=olower/n, UpperCI=oupper/n))
-  
-  
+
+
 }
 
 
 # SQL connection to OF and data pull
-sql_connection <- dbConnect(odbc::odbc(), Driver = "SQL Server", Server = "MLCSU-BI-SQL", 
+sql_connection <- dbConnect(odbc::odbc(), Driver = "SQL Server", Server = "MLCSU-BI-SQL",
                             Database = "EAT_Reporting_BSOL", Trusted_Connection = "True")
 
 sql1 <- "Select *
@@ -35,7 +35,7 @@ AND T1.ethnicity_code = T2.ethnicity_code
 AND T1.imd_code = T2.imd_code
 AND T1.sex_code = T2.sex_code
 WHERE T1.indicator_id = 51
-and T1.denominator IS NULL 
+and T1.denominator IS NULL
 and aggregation_type = 'ICB (Resident)'
 and start_date < convert(datetime, '20250401', 112)
 and (age_group_code <15 OR age_group_code = '999')"
@@ -47,24 +47,24 @@ MI <- repair_names(MI)
 
 
 
-MI2 <- 
-  MI %>% 
+MI2 <-
+  MI %>%
   mutate(imd_grp = ifelse(imd_code == 1, 1, 0),
-         rt = numerator / denominator) %>% 
+         rt = numerator / denominator) %>%
   dplyr::select(numerator, denominator = observation, age_group_code, sex_code, imd_grp, rt, start_date)
 
 
 # manual expected
-MI2_ref <- MI2 %>% 
-  group_by(start_date, age_group_code) %>% 
+MI2_ref <- MI2 %>%
+  group_by(start_date, age_group_code) %>%
   summarise(grp_num = sum(numerator),
             grp_denom = sum(denominator),
-            grp_rt = sum(numerator)/sum(denominator)) %>% 
+            grp_rt = sum(numerator)/sum(denominator)) %>%
   as.data.frame()
-# Join back on 
-MI2 <- 
-  MI2 %>% 
-  left_join(MI2_ref) %>% 
+# Join back on
+MI2 <-
+  MI2 %>%
+  left_join(MI2_ref) %>%
   mutate(manual_expected = grp_rt * denominator)
 
 # manual plot
@@ -135,7 +135,7 @@ disp_ratio(MI_model1)
 models <- MI2 %>%
   group_by(start_date) %>%
   do(model = glm(numerator ~ 1 + age_group_code+ offset(log(denominator)) , data=.
-                 , family = "poisson"   
+                 , family = "poisson"
                  , control = glm.control(maxit = 200)))
 
 # Predict using the corresponding model for each group
@@ -150,12 +150,12 @@ predictions <- MI2 %>%
 
 MI2$preds <- predict(MI_model1, newdata = MI2, type = "response")
 
-MI2 %>% 
+MI2 %>%
   summarise(sum(numerator) / sum(denominator))
 
 
-MI2 %>% 
-  group_by(start_date, imd_grp) %>% 
+MI2 %>%
+  group_by(start_date, imd_grp) %>%
   summarise(sum(numerator) / sum(preds))
 
 
@@ -239,12 +239,12 @@ predictions %>%
 
 
 
-MI2 %>% 
-  group_by(start_date, age_group_code) %>% 
+MI2 %>%
+  group_by(start_date, age_group_code) %>%
   summarise(sum(numerator),
-            sum(denominator)) %>% 
+            sum(denominator)) %>%
   as.data.frame()
-  
+
 ############################################################
 # PHEIndicatormethods
 
@@ -257,9 +257,9 @@ phe
 
 
 # Create grouped summary
-a <- MI2 %>% 
-  group_by(start_date, imd_grp) %>% 
-  summarise(n = sum(denominator), x = sum(numerator), 
+a <- MI2 %>%
+  group_by(start_date, imd_grp) %>%
+  summarise(n = sum(denominator), x = sum(numerator),
             x_ref = sum(grp_num), n_ref = sum(grp_denom),  .groups = "drop")
 
 
@@ -279,7 +279,7 @@ for (i in 1:nrow(a)) {
   mi_sub <- subset(MI2, start_date == dt_sub$start_date & imd_grp == dt_sub$imd_grp)
   tmp <-calculate_ISRatio(mi_sub, x = x, n =n, x_ref = x_ref
                           , n_ref = n_ref, refpoptype = "field")
-  
+
   b<-rbind(b, cbind(dt_sub, tmp))
 }
 
@@ -330,11 +330,11 @@ b %>%
 
 max(MI$start_date)
 
-MI3 <- 
-  MI %>% 
-  filter(start_date == max(MI$start_date)) %>% 
+MI3 <-
+  MI %>%
+  filter(start_date == max(MI$start_date)) %>%
   mutate(imd_grp = ifelse(imd_code == 1, 1, 0),
-         rt = numerator / denominator) %>% 
+         rt = numerator / denominator) %>%
   dplyr::select(numerator, denominator = observation, age_group_code, sex_code
                 , imd_code, imd_grp, rt, start_date)
 
@@ -386,3 +386,4 @@ ggplot(out_coefs, aes(x=imd_quintile, y = ratio, fill=imd_quintile))+
   theme_minimal() +
   theme(plot.subtitle = element_text(face = "italic")
         )
+

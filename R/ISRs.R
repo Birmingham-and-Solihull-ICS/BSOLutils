@@ -8,7 +8,7 @@
 #' * denominator - the population or group at risk, or group/segment
 #' * imd_code - numeric encoded IMD quintile, with unknown coded as 999
 #' * age_group_code - age bands used for standardisation.  Bin/age band size is not important provided it is consistent.
-#' * sex - numeric encoded sex
+#' * sex_code - numeric encoded sex
 #' @param age TRUE/FALSE whether to include age in the standardisation.
 #' @param sex TRUE/FALSE whether to include sex in the standardisation.
 #'
@@ -36,7 +36,7 @@ ISR_deprivation <-
     predictors <- c("imd_code_f")
 
     if (age) predictors <- c(predictors, "age_group_code_f")
-    if (sex) predictors <- c(predictors, "sex")
+    if (sex) predictors <- c(predictors, "sex_group_code")
 
     formula_str <- paste("numerator ~", paste(predictors, collapse = " + "), "+ offset(log(denominator))")
     model_formula <- as.formula(formula_str)

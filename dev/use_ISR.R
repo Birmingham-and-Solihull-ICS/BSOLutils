@@ -1,18 +1,31 @@
 source("utils.R")
 library(MASS)
+library(BSOLutils)
 
 MI_data
 
 stroke_data
 
+a<-ISR_deprivation(MI3)
+ISR_deprivation_plot(a)
 
-ISR_dperivation <-
-  function(.dt, age=TRUE, sex=FALSE, )
-MI3 <- 
-  MI %>% 
-  filter(start_date == max(MI$start_date)) %>% 
+MI4 <- MI3 %>%
+    select(age_group_code, sex_group_code = sex_code, imd_code, numerator, denominator)
+
+ISR_deprivation(MI4)
+
+
+
+
+MI4 %>%
+
+ISR_deprivation <-
+  function(.dt, age=TRUE, sex=FALSE)
+MI3 <-
+  MI %>%
+  filter(start_date == max(MI$start_date)) %>%
   mutate(imd_grp = ifelse(imd_code == 1, 1, 0),
-         rt = numerator / denominator) %>% 
+         rt = numerator / denominator) %>%
   dplyr::select(numerator, denominator = observation, age_group_code, sex_code
                 , imd_code, imd_grp, rt, start_date)
 
