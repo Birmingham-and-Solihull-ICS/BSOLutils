@@ -11,13 +11,16 @@ prop_ci(o, n, ci = 0.95)
 
 \item{n}{expected or denominator value}
 
-\item{ci}{confidence interval coverage required.  Default is 0.95 for 95\\% confidence interval}
+\item{ci}{confidence interval coverage required.  Default is 0.95 for 95\\%
+confidence interval}
 }
 \value{
-A vector o/n, lower confidence interval limit, and upper confidence interval limit
+A data.frame with Rate =  o/n, lower confidence interval limit, and
+upper confidence interval limit
 }
 \description{
-A Wilson score-based CI calculation for a proportion.  Based on guidance by PHE
+A Wilson score-based CI calculation for a proportion.
+Based on guidance by PHE
 }
 \examples{
 prop_ci(50,120)

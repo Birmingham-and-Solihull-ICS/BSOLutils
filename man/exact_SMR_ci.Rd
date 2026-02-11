@@ -11,15 +11,18 @@ exact_SMR_ci(o, n, ci = 0.95)
 
 \item{n}{expected or denominator value}
 
-\item{ci}{confidence interval coverage required.  Default is 0.95 for 95\\% confidence interval}
+\item{ci}{confidence interval coverage required.  Default is 0.95 for 95\\%
+confidence interval}
 }
 \value{
-A vector o/n, lower confidence interval limit, and upper confidence interval limit
+A vector o/n, lower confidence interval limit, and upper confidence
+interval limit
 }
 \description{
-Exact poisson limit used for small counts and SMRs, based on Poisson distribution.
-This uses Ulm's method, exploiting the link to the chisq distribution.  This approach is used for un adjusted
-limits in the FunnelPlotR package.
+Exact poisson limit used for small counts and SMRs, based on
+Poisson distribution.
+This uses Ulm's method, exploiting the link to the chisq distribution.
+This approach is used for un adjusted limits in the FunnelPlotR package.
 }
 \examples{
 # For a rate of 50 / 100

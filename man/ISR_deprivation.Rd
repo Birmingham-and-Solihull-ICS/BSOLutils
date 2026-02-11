@@ -13,7 +13,7 @@ ISR_deprivation(.dt, age = TRUE, sex = FALSE)
 \item denominator - the population or group at risk, or group/segment
 \item imd_code - numeric encoded IMD quintile, with unknown coded as 999
 \item age_group_code - age bands used for standardisation.  Bin/age band size is not important provided it is consistent.
-\item sex_code - numeric encoded sex
+\item sex_group_code - numeric encoded sex
 }}
 
 \item{age}{TRUE/FALSE whether to include age in the standardisation.}

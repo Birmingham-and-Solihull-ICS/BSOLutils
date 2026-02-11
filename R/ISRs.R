@@ -8,7 +8,7 @@
 #' * denominator - the population or group at risk, or group/segment
 #' * imd_code - numeric encoded IMD quintile, with unknown coded as 999
 #' * age_group_code - age bands used for standardisation.  Bin/age band size is not important provided it is consistent.
-#' * sex_code - numeric encoded sex
+#' * sex_group_code - numeric encoded sex
 #' @param age TRUE/FALSE whether to include age in the standardisation.
 #' @param sex TRUE/FALSE whether to include sex in the standardisation.
 #'
@@ -81,12 +81,12 @@ ISR_deprivation_plot <-
            description = "Myocardial Infarction (Under 75yrs) - 2024/25",
            x_scale = seq(0,1.5,0.1)) {
 
-    ggplot(out_coefs, aes(x = imd_quintile, y = ratio, fill = imd_quintile))+
+    ggplot(.dt, aes(x = imd_quintile, y = ratio, fill = imd_quintile)) +
       geom_col(show.legend = FALSE, alpha = 0.8) +
-      geom_errorbar(aes(ymin = lowerCI, ymax = upperCI, width = 0.5))+
-      geom_hline(yintercept = 1, linetype = "dashed", col = "red", size = 1) +
+      geom_errorbar(aes(ymin = lowerCI, ymax = upperCI, width = 0.5)) +
+      geom_hline(yintercept = 1, linetype = "dashed", col = "red", linewidth = 1) +
       scale_fill_brewer(palette = "Dark2") +
-      scale_y_continuous(breaks = x_scale)+
+      scale_y_continuous(breaks = x_scale) +
       labs(#colour = "Deprivation Qunitile",
            x = "IMD Quintile (999 = 'Unknown')",
            y = "Indirectly Standardised Ratio",
