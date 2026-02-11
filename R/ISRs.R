@@ -15,11 +15,12 @@
 #' @returns a data.frame with
 #' @export
 #'
+#' @importFrom stats as.formula coef confint rbinom
+#' @import MASS
+#'
 #' @examples
-#' # This example won't work at the moment
-#' \dontrun{
-#'   ISR_deprivation(a)
-#'   }
+#' data(ISR_example)
+#' ISR_deprivation(ISR_example)
 #'
 ISR_deprivation <-
   function(.dt,
@@ -42,7 +43,7 @@ ISR_deprivation <-
     model_formula <- as.formula(formula_str)
 
     # Fit negative binomial model
-    model <- MASS::glm.nb(model_formula, data = .dt)
+    model <- glm.nb(model_formula, data = .dt, control = glm.control(maxit=100))
 
     cis <- confint(model)
 
@@ -71,22 +72,21 @@ ISR_deprivation <-
 #' @export
 #'
 #' @examples
-# This example won't work at the moment
-#' \dontrun{
-#' standardised_dep <- ISR(my_dt)
-#' ISR_deprivation_plot()
-#' }
+#' data(ISR_example)
+#' standardised_dep <- ISR_deprivation(ISR_example)
+#' ISR_deprivation_plot(standardised_dep)
+#'
 ISR_deprivation_plot <-
   function(.dt,
            description = "Myocardial Infarction (Under 75yrs) - 2024/25",
-           x_scale = seq(0,1.5,0.1)) {
+           y_scale = seq(0,1.5,0.1)) {
 
     ggplot(.dt, aes(x = imd_quintile, y = ratio, fill = imd_quintile)) +
       geom_col(show.legend = FALSE, alpha = 0.8) +
       geom_errorbar(aes(ymin = lowerCI, ymax = upperCI, width = 0.5)) +
       geom_hline(yintercept = 1, linetype = "dashed", col = "red", linewidth = 1) +
       scale_fill_brewer(palette = "Dark2") +
-      scale_y_continuous(breaks = x_scale) +
+      scale_y_continuous(breaks = y_scale) +
       labs(#colour = "Deprivation Qunitile",
            x = "IMD Quintile (999 = 'Unknown')",
            y = "Indirectly Standardised Ratio",
@@ -97,3 +97,24 @@ ISR_deprivation_plot <-
       )
 
   }
+
+
+#' ISR example dataset
+#'
+#' An artificial dataset with 6 age bads, 2 sex bands and 5 IMD quintiles plus
+#'  and unknown coded as 999.
+#' This is here to test and demonstrate the function
+#'
+#' @format ## `ISR example dataset`
+#' A data frame with 192 rows and 5 columns:
+#' \describe{
+#'   \item{age_group_code}{Numerically coded age-bands}
+#'   \item{sex_group_code}{Numerically coded sex groups}
+#'   \item{imd_code}{Index of multiple deprivation qunitiles, 1-5, 999 = unknown}
+#'   \item{numerator}{Numerator of a given indicator}
+#'   \item{denominator}{Denominator of a given indicator}
+#'   ...
+#' }
+#' @source Constructed from code <https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/blob/main/dev/build_example_data.R>
+"ISR_example"
+

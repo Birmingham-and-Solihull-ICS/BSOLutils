@@ -7,7 +7,7 @@
 ISR_deprivation_plot(
   .dt,
   description = "Myocardial Infarction (Under 75yrs) - 2024/25",
-  x_scale = seq(0, 1.5, 0.1)
+  y_scale = seq(0, 1.5, 0.1)
 )
 }
 \arguments{
@@ -24,8 +24,8 @@ A ggplot object (list)
 Plot function for output parameters of ISR calculation
 }
 \examples{
-\dontrun{
-standardised_dep <- ISR(my_dt)
-ISR_deprivation_plot()
-}
+data(ISR_example)
+standardised_dep <- ISR_deprivation(ISR_example)
+ISR_deprivation_plot(standardised_dep)
+
 }

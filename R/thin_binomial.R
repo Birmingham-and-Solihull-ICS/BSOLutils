@@ -5,7 +5,10 @@
 #' @param p vector of probabilities (e.g. arrivals get admitted)
 #'
 #' @returns vector of thinned counts
+#'
 #' @export
+#'
+#' @importFrom stats rbinom
 #'
 #' @examples
 #' set.seed(2024)

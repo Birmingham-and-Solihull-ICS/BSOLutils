@@ -1,79 +1,87 @@
-source("utils.R")
-library(MASS)
+library(DBI)
+library(tidyverse)
 library(BSOLutils)
 
-MI_data
 
-stroke_data
-
-a<-ISR_deprivation(MI3)
-ISR_deprivation_plot(a)
-
-MI4 <- MI3 %>%
-    select(age_group_code, sex_group_code = sex_code, imd_code, numerator, denominator)
-
-ISR_deprivation(MI4)
+# SQL connection to OF and data pull
+sql_connection <- dbConnect(odbc::odbc(), Driver = "SQL Server", Server = "MLCSU-BI-SQL",
+                            Database = "EAT_Reporting_BSOL", Trusted_Connection = "True")
 
 
+# For MI
+sql1 <- "Select T1.*, T2.observation
+  from [EAT_Reporting_BSOL].[OF].[OF2_Indicator_SQL_Data] T1
+  LEFT JOIN [EAT_Reporting_BSOL].[OF].[OF2_Reference_Population] T2
+ON T1.aggregation_id = T2.aggregation_id
+AND T1.age_group_code = T2.age_code
+AND T1.ethnicity_code = T2.ethnicity_code
+AND T1.imd_code = T2.imd_code
+AND T1.sex_code = T2.sex_code
+WHERE T1.indicator_id = 51
+and T1.denominator IS NULL
+and aggregation_type = 'ICB (Resident)'
+and start_date < convert(datetime, '20250401', 112)
+and (age_group_code <15 OR age_group_code = '999')"
+
+#Get data
+MI <- dbGetQuery(sql_connection, sql1)
 
 
-MI4 %>%
-
-ISR_deprivation <-
-  function(.dt, age=TRUE, sex=FALSE)
-MI3 <-
-  MI %>%
-  filter(start_date == max(MI$start_date)) %>%
-  mutate(imd_grp = ifelse(imd_code == 1, 1, 0),
-         rt = numerator / denominator) %>%
-  dplyr::select(numerator, denominator = observation, age_group_code, sex_code
-                , imd_code, imd_grp, rt, start_date)
 
 
-MI3$age_group_code_f <- factor(MI3$age_group_code)
+# Aggregate data
+MI_agg <-
+    MI %>%
+    filter(start_date == max(MI$start_date)) %>% # select most recent date
+    mutate(
+           rt = numerator / denominator) %>%
+    dplyr::select(numerator, denominator = observation, age_group_code
+                  , sex_group_code = sex_code, imd_code, rt, start_date)
 
-MI3$imd_code_f <- factor(MI3$imd_code, levels= c("1","2","3","4","5","999")
-                         , labels = c("1","2","3","4","5","999"))
+# run function
 
-unique(MI3$imd_code)
-
-MI_model3 <- glm.nb(numerator ~ 1 +
-                      imd_code_f +
-                      age_group_code_f +
-                      #start_date +
-                      offset(log(denominator))
-                    , data = MI3
-                    #, family = "poisson"
-                    #, control = glm.control(maxit = 50)
-)
-#                , family="poisson")
-
-summary(MI_model3)
-exp(coef(MI_model3))
-exp(confint(MI_model3))
-
-disp_ratio(MI_model3)
-
-out_coefs <-
-  data.frame(
-    imd_quintile = c("2","3","4","5","999"),
-    ratio = exp((coef(MI_model3)[2:6])),
-    lowerCI = exp(confint(MI_model3)[2:6,1]),
-    upperCI = exp(confint(MI_model3)[2:6,2])
-  )
+MI_out <- ISR_deprivation(MI_agg)
 
 
-ggplot(out_coefs, aes(x=imd_quintile, y = ratio, fill=imd_quintile))+
-  geom_col(show.legend = FALSE, alpha = 0.8) +
-  geom_errorbar(aes(ymin=lowerCI, ymax=upperCI, width = 0.5))+
-  geom_hline(yintercept = 1, linetype = "dashed", col = "red", size = 1) +
-  scale_fill_brewer(palette = "Dark2") +
-  scale_y_continuous(breaks=seq(0,1.1,0.1))+
-  labs(colour = "Deprivation Qunitile",
-       x = "IMD Quintile (999 = 'Unknown')",
-       y = "Indirectly Standardised Ratio",
-       title = "Age-standardised Admission Ratio Ratios: Myocardial Infarction (Under 75yrs) - 2024/25",
-       subtitle = "A ratio of 1 means the rate = the rate in Quintile 1") +
-  theme_minimal() +
-  theme(plot.subtitle = element_text(face = "italic")
-  )
+# Optional plot
+ISR_deprivation_plot(MI_out)
+
+
+
+# For Stroke:
+sql2 <- "Select T1.*, T2.observation
+  from [EAT_Reporting_BSOL].[OF].[OF2_Indicator_SQL_Data] T1
+  LEFT JOIN [EAT_Reporting_BSOL].[OF].[OF2_Reference_Population] T2
+ON T1.aggregation_id = T2.aggregation_id
+AND T1.age_group_code = T2.age_code
+AND T1.ethnicity_code = T2.ethnicity_code
+AND T1.imd_code = T2.imd_code
+AND T1.sex_code = T2.sex_code
+WHERE T1.indicator_id = 50
+and T1.denominator IS NULL
+and aggregation_type = 'ICB (Resident)'
+and start_date < convert(datetime, '20250401', 112)
+and (age_group_code <15 OR age_group_code = '999')"
+
+#Get data
+Stroke <- dbGetQuery(sql_connection, sql2)
+
+
+
+
+# Aggregate data
+Stroke_agg <-
+    Stroke %>%
+    filter(start_date == max(MI$start_date)) %>% # select most recent date
+    mutate(
+        rt = numerator / denominator) %>%
+    dplyr::select(numerator, denominator = observation, age_group_code
+                  , sex_group_code = sex_code, imd_code, rt, start_date)
+
+# run function
+
+Stroke_out <- ISR_deprivation(Stroke_agg)
+
+
+# Optional plot
+ISR_deprivation_plot(Stroke_out)

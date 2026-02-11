@@ -28,9 +28,7 @@ This function uses negative binomial regression, to counter overdispersion, to a
 A ratio of 1 means observed = expected, <1 means observed < expected, and >1 means observed > expected.
 }
 \examples{
-# This example won't work at the moment
-\dontrun{
-  ISR_deprivation(a)
-  }
+data(ISR_example)
+ISR_deprivation(ISR_example)
 
 }
