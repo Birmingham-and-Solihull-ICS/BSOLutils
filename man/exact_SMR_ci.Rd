@@ -25,6 +25,6 @@ This uses Ulm's method, exploiting the link to the chisq distribution.
 This approach is used for un adjusted limits in the FunnelPlotR package.
 }
 \examples{
-# For a rate of 50 / 100data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAbElEQVR4Xs2RQQrAMAgEfZgf7W9LAguybljJpR3wEse5JOL3ZObDb4x1loDhHbBOFU6i2Ddnw2KNiXcdAXygJlwE8OFVBHDgKrLgSInN4WMe9iXiqIVsTMjH7z/GhNTEibOxQswcYIWYOR/zAjBJfiXh3jZ6AAAAAElFTkSuQmCC
+# For a rate of 50 / 100
 exact_SMR_ci(50, 120)
 }

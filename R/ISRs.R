@@ -15,7 +15,7 @@
 #' @returns a data.frame with
 #' @export
 #'
-#' @importFrom stats as.formula coef confint rbinom
+#' @importFrom stats as.formula coef confint rbinom glm.control
 #' @import MASS
 #'
 #' @examples
@@ -81,13 +81,15 @@ ISR_deprivation_plot <-
            description = "Myocardial Infarction (Under 75yrs) - 2024/25",
            y_scale = seq(0,1.5,0.1)) {
 
+    imd_quintile <- ratio <- lowerCI <- upperCI <- NULL
+
     ggplot(.dt, aes(x = imd_quintile, y = ratio, fill = imd_quintile)) +
       geom_col(show.legend = FALSE, alpha = 0.8) +
       geom_errorbar(aes(ymin = lowerCI, ymax = upperCI, width = 0.5)) +
       geom_hline(yintercept = 1, linetype = "dashed", col = "red", linewidth = 1) +
       scale_fill_brewer(palette = "Dark2") +
       scale_y_continuous(breaks = y_scale) +
-      labs(#colour = "Deprivation Qunitile",
+      labs(#colour = "Deprivation Quintile",
            x = "IMD Quintile (999 = 'Unknown')",
            y = "Indirectly Standardised Ratio",
            title = paste("Age-standardised Admission Ratio Ratios:", description) ,
