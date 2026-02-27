@@ -1,6 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 # BSOLutils
 
 This repository contains an R package with various helper functions for
