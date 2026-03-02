@@ -12,7 +12,8 @@ RoxygenNote: 7.3.3
 Imports: 
     ggplot2,
     lubridate,
-    MASS
+    MASS,
+    NHSRdatasets
 Depends: 
     R (>= 3.5)
 LazyData: true
