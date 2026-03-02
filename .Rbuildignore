@@ -5,5 +5,5 @@
 ^LICENSE\.md$
 ^\.github$
 ^codecov\.yml$
-^MIT-LICENSE\.md$
-^OPEN_GOV_LICENSE\.md$
+^MIT-LICENSE$
+^OPEN_GOV_LICENSE$
