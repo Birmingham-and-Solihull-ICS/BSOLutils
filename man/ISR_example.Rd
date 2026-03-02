@@ -5,6 +5,8 @@
 \alias{ISR_example}
 \title{ISR example dataset}
 \format{
+\subsection{\code{ISR_example}}{
+
 A data frame with 192 rows and 5 columns:
 \describe{
 \item{age_group_code}{Numerically coded age-bands}
@@ -14,8 +16,9 @@ A data frame with 192 rows and 5 columns:
 \item{denominator}{Denominator of a given indicator}
 }
 }
+}
 \source{
-Constructed from code \url{https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/blob/main/dev/build_example_data.R}
+Constructed from code \url{https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/blob/main/data-raw/build_example_data.R}
 }
 \usage{
 data(ISR_example)

@@ -7,3 +7,4 @@
 ^codecov\.yml$
 ^MIT-LICENSE$
 ^OPEN_GOV_LICENSE$
+^data-raw$

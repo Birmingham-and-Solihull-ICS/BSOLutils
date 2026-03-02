@@ -104,13 +104,14 @@ ISR_deprivation_plot <-
 #' ISR example dataset
 #'
 #' An artificial dataset with 6 age bads, 2 sex bands and 5 IMD quintiles plus
-#'  and unknown coded as 999.
+#' and unknown coded as 999.
 #' This is here to test and demonstrate the function
 #' @docType data
 #'
 #' @keywords datasets
 #'
-#' @format A data frame with 192 rows and 5 columns:
+#' @format ## `ISR_example`
+#' A data frame with 192 rows and 5 columns:
 #' \describe{
 #'   \item{age_group_code}{Numerically coded age-bands}
 #'   \item{sex_group_code}{Numerically coded sex groups}
@@ -119,7 +120,7 @@ ISR_deprivation_plot <-
 #'   \item{denominator}{Denominator of a given indicator}
 #' }
 #'
-#' @source Constructed from code <https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/blob/main/dev/build_example_data.R>
+#' @source Constructed from code <https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/blob/main/data-raw/build_example_data.R>
 #'
 #' @usage data(ISR_example)
 #'
