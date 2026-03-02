@@ -5,8 +5,6 @@
 \alias{ISR_example}
 \title{ISR example dataset}
 \format{
-\subsection{\verb{ISR example dataset}}{
-
 A data frame with 192 rows and 5 columns:
 \describe{
 \item{age_group_code}{Numerically coded age-bands}
@@ -14,8 +12,6 @@ A data frame with 192 rows and 5 columns:
 \item{imd_code}{Index of multiple deprivation qunitiles, 1-5, 999 = unknown}
 \item{numerator}{Numerator of a given indicator}
 \item{denominator}{Denominator of a given indicator}
-...
-}
 }
 }
 \source{

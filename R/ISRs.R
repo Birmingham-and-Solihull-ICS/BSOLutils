@@ -108,15 +108,15 @@ ISR_deprivation_plot <-
 #' This is here to test and demonstrate the function
 #' @docType data
 #'
-#' @format ## `ISR example dataset`
-#' A data frame with 192 rows and 5 columns:
+#' @keywords datasets
+#'
+#' @format A data frame with 192 rows and 5 columns:
 #' \describe{
 #'   \item{age_group_code}{Numerically coded age-bands}
 #'   \item{sex_group_code}{Numerically coded sex groups}
 #'   \item{imd_code}{Index of multiple deprivation qunitiles, 1-5, 999 = unknown}
 #'   \item{numerator}{Numerator of a given indicator}
 #'   \item{denominator}{Denominator of a given indicator}
-#'   ...
 #' }
 #'
 #' @source Constructed from code <https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/blob/main/dev/build_example_data.R>
