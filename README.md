@@ -5,13 +5,13 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/actions/workflows/R-CMD-check.yaml)  
+[![R-CMD-check](https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/Birmingham-and-Solihull-ICS/BSOLutils/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Birmingham-and-Solihull-ICS/BSOLutils?branch=main)
 
 <!-- badges: end -->
 
-# BSOLutils
+# BSOLutils <img src="https://www.birminghamsolihull.icb.nhs.uk/application/files/1316/5651/5354/logo_full_colour_main_lockup.svg" align="right" width="300px"/>
 
 This repository contains an R package with various helper functions for
 things like confidence intervals, measures of dispersion,
