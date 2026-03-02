@@ -22,11 +22,15 @@ A data frame with 192 rows and 5 columns:
 Constructed from code \url{https://github.com/Birmingham-and-Solihull-ICS/BSOLutils/blob/main/dev/build_example_data.R}
 }
 \usage{
-ISR_example
+data(ISR_example)
 }
 \description{
 An artificial dataset with 6 age bads, 2 sex bands and 5 IMD quintiles plus
 and unknown coded as 999.
 This is here to test and demonstrate the function
+}
+\examples{
+data(ISR_example)
+
 }
 \keyword{datasets}
