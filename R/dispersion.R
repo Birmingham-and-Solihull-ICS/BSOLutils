@@ -11,6 +11,7 @@
 #' @export
 #'
 #' @importFrom stats glm df.residual residuals
+#' @import NHSRdatasets
 #'
 #' @examples
 #' library(NHSRdatasets)
