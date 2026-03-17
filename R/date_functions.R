@@ -90,7 +90,7 @@ f_year <- function(d, short = FALSE) {
 #'         - from: starting year of window
 #'         - to:   ending year of window
 #'         - k:    span_years
-#'
+#' @export
 #' @examples
 #' generate_year_series(2014, 2024, 3)
 #' generate_year_series(2014, 2024, 3, overlapping = FALSE)
