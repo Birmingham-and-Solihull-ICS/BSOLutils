@@ -1,4 +1,11 @@
 url: https://birmingham-and-solihull-ics.github.io/BSOLutils/
 template:
   bootstrap: 5
+  light-switch: true
+  theme: gruvbox-light
+  theme-dark: gruvbox-dark
+  bslib:
+    bootswatch: lumen
+    pkgdown-nav-height: 100px
+    base_font: {google: "Open Sans"}
 
