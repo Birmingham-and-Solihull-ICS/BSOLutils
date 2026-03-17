@@ -11,6 +11,9 @@ Useful links:
 
 - <https://birmingham-and-solihull-ics.github.io/BSOLutils/>
 
+- Report bugs at
+  <https://github.com/birmingham-and-solihull-ics/BSOLutils/issues,>
+
 ## Author
 
 **Maintainer**: Chris Mainey <c.mainey1@nhs.net>

@@ -18,8 +18,10 @@ ICB palettes"></head><body>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/birmingham-and-solihull-ics/BSOLutils/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
@@ -35,7 +37,7 @@ ICB palettes"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>ICB Theme Palettes</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/birmingham-and-solihull-ics/BSOLutils/blob/main/R/colour_palettes.R" class="external-link"><code>R/colour_palettes.R</code></a></small>
       <div class="d-none name"><code>icb_theme_pal.Rd</code></div>
     </div>
 
@@ -85,8 +87,8 @@ ICB palettes</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         rgb(x[, 1L], x[, 2L], x[, 3L], x[, 4L], maxColorValue = 255)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     else rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56377c1744b8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56377c054270&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55a55966ba20&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55a5599feb58&gt;</span>
 <span class="r-in"><span><span class="fu">icb_theme_pal</span><span class="op">(</span><span class="st">"bsol"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (n) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -95,8 +97,8 @@ ICB palettes</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         rgb(x[, 1L], x[, 2L], x[, 3L], x[, 4L], maxColorValue = 255)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     else rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56377c1744b8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56377c0a2500&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55a55966ba20&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55a559a4d6a0&gt;</span>
 <span class="r-in"><span><span class="co"># or, specify a palette</span></span></span>
 <span class="r-in"><span><span class="fu">icb_theme_pal</span><span class="op">(</span><span class="st">"ics_orange"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (n) </span>
@@ -106,8 +108,8 @@ ICB palettes</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         rgb(x[, 1L], x[, 2L], x[, 3L], x[, 4L], maxColorValue = 255)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     else rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56377c1744b8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56377c0f9930&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55a55966ba20&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55a559aa2808&gt;</span>
 <span class="r-in"><span><span class="co"># a reverse palette</span></span></span>
 <span class="r-in"><span><span class="fu">icb_theme_pal</span><span class="op">(</span><span class="st">"cluster"</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (n) </span>
@@ -117,8 +119,8 @@ ICB palettes</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         rgb(x[, 1L], x[, 2L], x[, 3L], x[, 4L], maxColorValue = 255)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     else rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56377c1744b8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56377c151690&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55a55966ba20&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55a559b02540&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

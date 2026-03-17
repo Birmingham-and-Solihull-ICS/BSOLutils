@@ -11,6 +11,9 @@
 
 ## Citation
 
+Source:
+[`DESCRIPTION`](https://github.com/birmingham-and-solihull-ics/BSOLutils/blob/main/DESCRIPTION)
+
 Mainey C (2026). *BSOLutils: Utilities and general helper R package with
 various functions*. R package version 0.0.3,
 <https://birmingham-and-solihull-ics.github.io/BSOLutils/>.

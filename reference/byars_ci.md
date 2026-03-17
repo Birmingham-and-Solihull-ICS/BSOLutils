@@ -1,6 +1,6 @@
 # Byar's confidence interval
 
-Byar's confidence interval fro counts, crude rates or indirectly
+Byar's confidence interval for counts, crude rates or indirectly
 standardised ratios
 
 ## Usage
