@@ -92,12 +92,6 @@ LOS_summary <-
 # Using in a plot
 library(ggplot2)
 library(tidyr)
-
-
-
-# install.packages(c("dplyr", "tidyr", "stringr"))  # if needed
-library(dplyr)
-library(tidyr)
 library(stringr)
 
 LOS_summary |> 
@@ -149,4 +143,4 @@ derive_sql_data_types(LOS_model)
 This repository is dual licensed under the [Open Government v3](NA) &
 MIT. All code and outputs are subject to Crown Copyright.
 
-![](./inst/signature.svg)
+![](./reference/figures/signature.svg)
