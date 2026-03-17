@@ -15,9 +15,9 @@
 #' scale_colour_icb()+
 #' theme_icb()
 #'
-#' ggplotly_bsol(a)
+#' ggplotly_icb(a)
 #'
-ggplotly_bsol <- function(p = ggplot2::last_plot(), font, ...){
+ggplotly_icb <- function(p = ggplot2::last_plot(), font, ...){
 
     # check ggplot class input
     if (!any(grepl("ggplot", class(p)))) {
