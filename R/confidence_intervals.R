@@ -33,7 +33,7 @@ prop_ci <- function(o, n, ci = 0.95) {
 
 #' @title Byar's confidence interval
 #'
-#' @description Byar's confidence interval fro counts, crude rates or
+#' @description Byar's confidence interval for counts, crude rates or
 #' indirectly standardised ratios
 #'
 #' @param o observed or numerator value
