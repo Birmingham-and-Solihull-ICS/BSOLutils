@@ -15,8 +15,8 @@
 #' @returns a data.frame with
 #' @export
 #'
-#' @importFrom stats as.formula coef confint rbinom glm.control
-#' @import MASS
+#' @importFrom stats as.formula coef confint rbinom glm.control profile
+#' @importFrom MASS glm.nb
 #'
 #' @examples
 #' data(ISR_example)
@@ -43,7 +43,7 @@ ISR_deprivation <-
     model_formula <- as.formula(formula_str)
 
     # Fit negative binomial model
-    model <- glm.nb(model_formula, data = .dt, control = glm.control(maxit=100))
+    model <- glm.nb(model_formula, data = .dt, control = glm.control(maxit = 100))
 
     cis <- confint(model)
 
@@ -163,6 +163,9 @@ ISR_deprivation_plotly <- function(
     measure_title = "Age-standardised Admission Ratio Ratios"
 ) {
 
+  # Set variables NULL for bindings error
+  imd_quintile <- upperCI <- ratio <- lowerCI <- NULL
+
   # Basic checks
   required_cols <- c("imd_quintile", "ratio", "lowerCI", "upperCI")
   missing_cols <- setdiff(required_cols, names(.dt))
@@ -229,7 +232,7 @@ ISR_deprivation_plotly <- function(
     plotly::layout(
       title = list(
         text = paste0(
-          title_prefix, ": ", description,
+          measure_title, ": ", description,
           "<br><span style='font-size:12px'><i>A ratio of 1 means the rate = the rate in Quintile 1</i></span>"
         ),
         font = list(size = 14)
@@ -321,15 +324,19 @@ ISR_deprivation_plotly <- function(
 #' @importFrom janitor clean_names
 create_ISR_deprivation_output <- function(data) {
 
+  # Set NSE variable to NULL to avoid binding error
+  ratio <- lowerCI <- ratio <- upperCI <- NULL
+  imd_quintile <- interpretation <- statistical_significance <- NULL
+
   data |>
     dplyr::mutate(
       ratio = round(ratio, 2),
       lowerCI = round(lowerCI, 2),
       upperCI = round(upperCI, 2),
       direction = dplyr::case_when(
-        ratio > 1 ~ "↑ Higher",
-        ratio < 1 ~ "↓ Lower",
-        TRUE ~ "→ Same as"
+        ratio > 1 ~ "\u2191 Higher",
+        ratio < 1 ~ "\u2193 Lower",
+        TRUE ~ "\u2192 Same as"
       ),
       abs_change = scales::percent(abs(ratio - 1), accuracy = 0.1),
       CI_text = paste0(
@@ -424,6 +431,9 @@ create_ISR_deprivation_output <- function(data) {
 #' @importFrom gt tab_style cell_text cell_fill cells_body
 #' @importFrom gt from_column cells_column_labels cols_hide tab_options pct
 ISR_deprivation_table <- function(data) {
+
+  # Set NSE variable to NULL to avoid binding error
+  Ratio <- `Statistical Significance` <- sig_fill <- NULL
 
   sig_colors <- dplyr::case_when(
     data$`Statistical Significance` == "Significantly higher than IMD 1" ~ "#f4cccc",

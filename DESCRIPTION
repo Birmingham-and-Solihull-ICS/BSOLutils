@@ -1,6 +1,6 @@
 Package: BSOLutils
 Title: Utilities and general helper R package with various functions
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
   person(
     "Chris", "Mainey",
@@ -19,7 +19,7 @@ Authors@R: c(
     role = "ctb"
   ))
 Maintainer: Chris Mainey <c.mainey1@nhs.net>
-Description: This package contains numerous helper functions.  There include functions for confidence intervals, binomial thinning, standardisation methods and dispersion metrics.
+Description: This package contains numerous helper functions.  There include functions for confidence intervals, predicting SQL data types, ggplot themes and palettes, ploty helpers, binomial thinning, standardisation methods and dispersion metrics.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -28,15 +28,16 @@ Imports:
     dplyr,
     fs,
     ggplot2,
+    glue,
     grDevices,
     gt,
+    janitor,
     lubridate,
     MASS,
     NHSRdatasets,
-    PHEindicatormethods,
     plotly,
     purrr,
-    rlang,
+    scales,
     showtext,
     sysfonts,
     usethis
@@ -44,7 +45,8 @@ Depends:
     R (>= 4.1.0)
 LazyData: true
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tibble
 Config/testthat/edition: 3
 Remotes: 
     r-lib/fs,
