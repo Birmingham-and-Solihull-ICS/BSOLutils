@@ -105,12 +105,6 @@ LOS_summary <-
 # Using in a plot
 library(ggplot2)
 library(tidyr)
-
-
-
-# install.packages(c("dplyr", "tidyr", "stringr"))  # if needed
-library(dplyr)
-library(tidyr)
 library(stringr)
 
 LOS_summary |> 
@@ -163,4 +157,4 @@ This repository is dual licensed under the [Open Government
 v3](%5Bhttps://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
 & MIT. All code and outputs are subject to Crown Copyright.
 
-<img src="./inst/signature.svg" align="center"/>
+<img src="./man/figures/signature.svg" align="center"/>
