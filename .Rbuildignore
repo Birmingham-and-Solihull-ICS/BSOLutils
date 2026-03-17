@@ -8,3 +8,6 @@
 ^MIT-LICENSE$
 ^OPEN_GOV_LICENSE$
 ^data-raw$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
