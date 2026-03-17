@@ -71,3 +71,90 @@ f_year <- function(d, short = FALSE) {
         as.character(paste0(sprintf("%02d", (y - 1) %% modulo),"/", sprintf("%02d", y %% 100)))
     }
 }
+
+
+#' Generate Year Windows
+#'
+#' Creates a sequence of year windows of fixed length.
+#'
+#' @param min_year Integer. First year in the range.
+#' @param max_year Integer. Last year in the range.
+#' @param span_years Integer >= 1. Window size in years.
+#' @param overlapping Logical. If TRUE (default), uses sliding windows.
+#'        If FALSE, uses non-overlapping windows.
+#' @param strict Logical. If TRUE, windows must be fully inside the
+#'        min_year:max_year range. If FALSE, partial windows at the end
+#'        are allowed (for non-overlapping mode).
+#'
+#' @return A data.frame with columns:
+#'         - from: starting year of window
+#'         - to:   ending year of window
+#'         - k:    span_years
+#'
+#' @examples
+#' generate_year_series(2014, 2024, 3)
+#' generate_year_series(2014, 2024, 3, overlapping = FALSE)
+#'
+generate_year_series <- function(min_year,
+                                 max_year,
+                                 span_years = 3L,
+                                 overlapping = TRUE,
+                                 strict = TRUE) {
+
+    # ---- Input Validation ----
+    # Must be numeric AND whole numbers
+    check_int <- function(x, name) {
+        if (!is.numeric(x)) stop(sprintf("%s must be numeric", name))
+        if (length(x) != 1L) stop(sprintf("%s must be length 1", name))
+        if (is.na(x) || is.nan(x) || is.infinite(x))
+            stop(sprintf("%s must be a finite integer", name))
+        if (x %% 1 != 0)
+            stop(sprintf("%s must be an integer (no decimals)", name))
+        as.integer(x)
+    }
+
+    min_year  <- check_int(min_year,  "min_year")
+    max_year  <- check_int(max_year,  "max_year")
+    span_years <- check_int(span_years, "span_years")
+
+    if (span_years < 1L)
+        stop("span_years must be >= 1")
+
+    if (min_year > max_year)
+        stop("min_year must be <= max_year")
+
+    # Guardrail for extremely large ranges
+    if ((max_year - min_year) > 1e6)
+        stop("Range too large; this may produce excessive output.")
+
+    # ---- Window Generation Logic ----
+    gap <- span_years - 1L
+
+    if (overlapping) {
+        # Sliding windows
+        last_start <- max_year - gap
+        if (last_start < min_year)
+            return(data.frame(from = integer(0), to = integer(0), k = integer(0)))
+
+        starts <- seq(min_year, last_start)
+        ends   <- starts + gap
+
+    } else {
+        # Non-overlapping windows
+        starts <- seq(min_year, max_year, by = span_years)
+        ends   <- starts + gap
+
+        if (strict) {
+            keep <- ends <= max_year
+            starts <- starts[keep]
+            ends   <- ends[keep]
+        }
+    }
+
+    # ---- Output ----
+    data.frame(
+        from = starts,
+        to   = ends,
+        k    = span_years
+    )
+}

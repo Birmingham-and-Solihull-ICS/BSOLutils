@@ -90,7 +90,7 @@ ISR_deprivation_plot <-
       scale_fill_brewer(palette = "Dark2") +
       scale_y_continuous(breaks = y_scale) +
       labs(#colour = "Deprivation Quintile",
-           x = "IMD Quintile (999 = 'Unknown')",
+           x = "IMD Quintile (999 = All (Persons))",
            y = "Indirectly Standardised Ratio",
            title = paste("Age-standardised Admission Ratio Ratios:", description) ,
            subtitle = "A ratio of 1 means the rate = the rate in Quintile 1") +
@@ -99,6 +99,385 @@ ISR_deprivation_plot <-
       )
 
   }
+
+
+#' Create an interactive Plotly bar chart for ISR deprivation output
+#'
+#' This function creates an interactive bar chart from the output of
+#' \code{ISR_deprivation()}, showing indirectly standardised ratio estimates by
+#' IMD quintile with confidence intervals. IMD quintile 1 is excluded from the
+#' chart because it is the reference group used to calculate the ratios.
+#'
+#' The plot includes:
+#' \itemize{
+#'   \item Bars for IMD quintiles 2, 3, 4, 5, and 999 (All Persons)
+#'   \item Asymmetric error bars based on the lower and upper confidence intervals
+#'   \item A horizontal reference line at ratio = 1
+#'   \item Interactive hover text showing the ratio and confidence interval values
+#' }
+#'
+#' @param .dt A data frame produced by \code{ISR_deprivation()} containing the
+#'   following variables:
+#'   \describe{
+#'     \item{imd_quintile}{IMD quintile identifier.}
+#'     \item{ratio}{Indirectly standardised ratio for each IMD quintile relative to IMD 1.}
+#'     \item{lowerCI}{Lower bound of the confidence interval for the ratio.}
+#'     \item{upperCI}{Upper bound of the confidence interval for the ratio.}
+#'   }
+#' @param description A character string to include in the plot title, typically
+#'   describing the indicator, age group, and reporting period. Default is Myocardial Infarction (Under 75 yrs) - 2024/25
+#' @param measure_title A character string used as the main title prefix for the
+#'   plot, for example \code{"Age-standardised Admission Ratio Ratios"} or
+#'   \code{"Age-sex-standardised Admission Ratio Ratios"}.
+#'
+#' @returns A \code{plotly} htmlwidget object.
+#'
+#' @details
+#' IMD quintile 1 is removed before plotting because it is the reference category
+#' against which the other quintiles are compared. The horizontal dashed line at
+#' ratio = 1 indicates equality with the rate in IMD quintile 1.
+#'
+#' IMD quintile 999 is displayed as \emph{All Persons}.
+#'
+#' @seealso
+#' \code{\link{ISR_deprivation}}
+#'
+#' @examples
+#' data(ISR_example)
+#'
+#' standardised_dep <- ISR_deprivation(ISR_example)
+#'
+#' ISR_deprivation_plotly(
+#'   .dt = standardised_dep,
+#'   description = "Myocardial Infarction (Under 75 yrs) - 2024/25",
+#'   measure_title = "Age-standardised Admission Ratio Ratios"
+#' )
+#'
+#' @export
+#'
+#' @importFrom dplyr filter mutate
+#' @importFrom plotly plot_ly layout
+ISR_deprivation_plotly <- function(
+    .dt,
+    description = "Myocardial Infarction (Under 75 yrs) - 2024/25",
+    measure_title = "Age-standardised Admission Ratio Ratios"
+) {
+
+  # Basic checks
+  required_cols <- c("imd_quintile", "ratio", "lowerCI", "upperCI")
+  missing_cols <- setdiff(required_cols, names(.dt))
+
+  if (length(missing_cols) > 0) {
+    stop(
+      "Missing required columns: ",
+      paste(missing_cols, collapse = ", ")
+    )
+  }
+
+  # Remove IMD 1 from plotted data
+  .dt <- .dt |>
+    dplyr::filter(imd_quintile != "1")
+
+  # Create error bar columns for plotting
+  .dt <- .dt |>
+    dplyr::mutate(
+      upper_error = upperCI - ratio,
+      lower_error = ratio - lowerCI
+    )
+
+  # Order quintiles after removing IMD 1
+  .dt <- .dt |>
+    dplyr::mutate(
+      imd_quintile = factor(imd_quintile, levels = c("2", "3", "4", "5", "999"))
+    )
+
+  # Custom tooltip
+  .dt <- .dt |>
+    dplyr::mutate(
+      tooltip_text = paste0(
+        "IMD Quintile: ", imd_quintile,
+        "<br>Ratio: ", round(ratio, 2),
+        "<br>Lower CI: ", round(lowerCI, 2),
+        "<br>Upper CI: ", round(upperCI, 2)
+      )
+    )
+
+  # Bar colours
+  bar_cols <- c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854")
+
+  n_bars <- nrow(.dt)
+
+  plotly::plot_ly(
+    data = .dt,
+    x = ~imd_quintile,
+    y = ~ratio,
+    type = "bar",
+    text = ~tooltip_text,
+    hoverinfo = "text",
+    textposition = "none",
+    marker = list(
+      color = bar_cols[seq_len(n_bars)]
+    ),
+    error_y = list(
+      type = "data",
+      symmetric = FALSE,
+      array = ~upper_error,
+      arrayminus = ~lower_error,
+      color = "black"
+    )
+  ) |>
+    plotly::layout(
+      title = list(
+        text = paste0(
+          title_prefix, ": ", description,
+          "<br><span style='font-size:12px'><i>A ratio of 1 means the rate = the rate in Quintile 1</i></span>"
+        ),
+        font = list(size = 14)
+      ),
+      showlegend = FALSE,
+      margin = list(t = 100),
+      xaxis = list(
+        title = "IMD Quintile (999 = All Persons)",
+        categoryorder = "array",
+        categoryarray = c("2", "3", "4", "5", "999")
+      ),
+      yaxis = list(title = "Indirectly Standardised Ratio"),
+      shapes = list(
+        list(
+          type = "line",
+          xref = "paper",
+          x0 = 0,
+          x1 = 1,
+          yref = "y",
+          y0 = 1,
+          y1 = 1,
+          line = list(color = "red", width = 2, dash = "dash")
+        )
+      )
+    )
+}
+
+#' Prepare ISR deprivation output for reporting
+#'
+#' This function enriches the output from \code{ISR_deprivation()} by adding
+#' interpretation and statistical significance columns.
+#' The resulting dataset can be used for reporting tables, for example
+#' when creating formatted tables with \code{ISR_deprivation_table()}.
+#'
+#' The function:
+#' - Rounds rate ratios and confidence intervals to two decimal places
+#' - Calculates the percentage difference from the reference group (IMD 1)
+#' - Generates an interpretation sentence describing the comparison with IMD 1
+#' - Determines statistical significance based on whether the confidence interval
+#'   crosses 1
+#'
+#' @param data A data frame produced by \code{ISR_deprivation()} containing the
+#'   following columns:
+#'   \describe{
+#'   \item{imd_quintile}{IMD quintile (2, 3, 4, 5, and 999 representing All Persons).}
+#'   \item{ratio}{Rate ratio comparing each IMD quintile against IMD 1 (reference group).}
+#'   \item{lowerCI}{Lower bound of the confidence interval for the rate ratio.}
+#'   \item{upperCI}{Upper bound of the confidence interval for the rate ratio.}
+#'   }
+#'
+#' @returns A data frame containing the following columns:
+#' \describe{
+#' \item{IMD Quintile}{Deprivation quintile group.}
+#' \item{Ratio}{Rate ratio compared with IMD 1.}
+#' \item{Lower CI}{Lower bound of the confidence interval.}
+#' \item{Upper CI}{Upper bound of the confidence interval.}
+#' \item{Interpretation}{Text interpretation describing the percentage difference
+#' from IMD 1 and the associated confidence interval.}
+#' \item{Statistical Significance}{Indicates whether the difference compared with
+#' IMD 1 is statistically significant.}
+#' }
+#'
+#' @details
+#' Statistical significance is determined as follows:
+#' \itemize{
+#' \item If the lower confidence interval is greater than 1, the rate is considered
+#' significantly higher than IMD 1.
+#' \item If the upper confidence interval is less than 1, the rate is considered
+#' significantly lower than IMD 1.
+#' \item Otherwise, the difference is not statistically significant.
+#' }
+#'
+#' @seealso
+#' \code{\link{ISR_deprivation}},
+#' \code{\link{ISR_deprivation_table}}
+#'
+#' @examples
+#' data(ISR_example)
+#'
+#' raw_output <- ISR_deprivation(ISR_example)
+#'
+#' report_table <- create_ISR_deprivation_output(raw_output)
+#'
+#' @export
+#'
+#' @importFrom dplyr mutate case_when select
+#' @importFrom scales percent
+#' @importFrom glue glue
+#' @importFrom janitor clean_names
+create_ISR_deprivation_output <- function(data) {
+
+  data |>
+    dplyr::mutate(
+      ratio = round(ratio, 2),
+      lowerCI = round(lowerCI, 2),
+      upperCI = round(upperCI, 2),
+      direction = dplyr::case_when(
+        ratio > 1 ~ "↑ Higher",
+        ratio < 1 ~ "↓ Lower",
+        TRUE ~ "→ Same as"
+      ),
+      abs_change = scales::percent(abs(ratio - 1), accuracy = 0.1),
+      CI_text = paste0(
+        scales::percent(lowerCI - 1, accuracy = 0.1), " to ",
+        scales::percent(upperCI - 1, accuracy = 0.1)
+      ),
+      interpretation = dplyr::case_when(
+        ratio == 1 ~ "Same as IMD 1 (95% CI: 0.0% to 0.0%)",
+        TRUE ~ glue::glue("{abs_change} {direction} than IMD 1 (95% CI: {CI_text})")
+      ),
+      statistical_significance = dplyr::case_when(
+        lowerCI > 1 ~ "Significantly higher than IMD 1",
+        upperCI < 1 ~ "Significantly lower than IMD 1",
+        TRUE ~ "Not statistically significant"
+      )
+    ) |>
+    dplyr::select(
+      imd_quintile,
+      ratio,
+      lowerCI,
+      upperCI,
+      interpretation,
+      statistical_significance
+    ) |>
+    janitor::clean_names(case = "title", abbreviations = c("IMD", "CI"))
+}
+
+#' Create a formatted gt table for ISR deprivation output
+#'
+#' This function converts the prepared output from
+#' \code{create_ISR_deprivation_output()} into a formatted \code{gt} table
+#' for reporting. It applies consistent styling to improve readability and
+#' interpretation of deprivation comparisons against IMD 1.
+#'
+#' The function:
+#' - Adds alternating row shading
+#' - Centres all columns
+#' - Sets a wider width for the Interpretation column
+#' - Highlights rate ratios above 1 in red
+#' - Highlights rate ratios below 1 in green
+#' - Applies background colours to the Statistical Significance column
+#' - Bolds all column headers
+#'
+#' @param data A data frame produced by \code{create_ISR_deprivation_output()}
+#'   containing the following columns:
+#'   \describe{
+#'   \item{IMD Quintile}{Deprivation quintile group.}
+#'   \item{Ratio}{Rate ratio compared with IMD 1.}
+#'   \item{Lower CI}{Lower bound of the confidence interval.}
+#'   \item{Upper CI}{Upper bound of the confidence interval.}
+#'   \item{Interpretation}{Narrative interpretation of the comparison with IMD 1.}
+#'   \item{Statistical Significance}{Significance category used for cell shading.}
+#'   }
+#'
+#' @returns A \code{gt_tbl} object that can be printed in Quarto, R Markdown,
+#' or other reporting workflows.
+#'
+#' @details
+#' The \code{Ratio} column is styled as follows:
+#' \itemize{
+#' \item Values greater than 1 are shown with red text and a light red background,
+#'   indicating a higher rate than IMD 1.
+#' \item Values less than 1 are shown with dark green text and a light green
+#'   background, indicating a lower rate than IMD 1.
+#' \item Values equal to 1 retain the default table styling, indicating no
+#'   difference from IMD 1.
+#' }
+#'
+#' The \code{Statistical Significance} column is shaded according to category:
+#' \itemize{
+#' \item \code{"Significantly higher than IMD 1"} = light red
+#' \item \code{"Significantly lower than IMD 1"} = light green
+#' \item \code{"Not statistically significant"} = light grey
+#' }
+#'
+#' @seealso
+#' \code{\link{ISR_deprivation}},
+#' \code{\link{create_ISR_deprivation_output}}
+#'
+#' @examples
+#' data(ISR_example)
+#'
+#' raw_output <- ISR_deprivation(ISR_example)
+#' table_data <- create_ISR_deprivation_output(raw_output)
+#'
+#' ISR_deprivation_table(table_data)
+#'
+#' @export
+#'
+#' @importFrom dplyr mutate case_when
+#' @importFrom gt gt opt_row_striping cols_align everything cols_width px
+#' @importFrom gt tab_style cell_text cell_fill cells_body
+#' @importFrom gt from_column cells_column_labels cols_hide tab_options pct
+ISR_deprivation_table <- function(data) {
+
+  sig_colors <- dplyr::case_when(
+    data$`Statistical Significance` == "Significantly higher than IMD 1" ~ "#f4cccc",
+    data$`Statistical Significance` == "Significantly lower than IMD 1" ~ "#d9ead3",
+    TRUE ~ "#f2f2f2"
+  )
+
+  data |>
+    dplyr::mutate(sig_fill = sig_colors) |>
+    gt::gt() |>
+    gt::opt_row_striping() |>
+    gt::cols_align(
+      align = "center",
+      columns = gt::everything()
+    ) |>
+    gt::cols_width(
+      Interpretation ~ gt::px(350)
+    ) |>
+    gt::tab_style(
+      style = list(
+        gt::cell_text(color = "red"),
+        gt::cell_fill(color = "#ffe5e5")
+      ),
+      locations = gt::cells_body(
+        columns = Ratio,
+        rows = Ratio > 1
+      )
+    ) |>
+    gt::tab_style(
+      style = list(
+        gt::cell_text(color = "darkgreen"),
+        gt::cell_fill(color = "#e6ffe6")
+      ),
+      locations = gt::cells_body(
+        columns = Ratio,
+        rows = Ratio < 1
+      )
+    ) |>
+    gt::tab_style(
+      style = gt::cell_fill(color = gt::from_column("sig_fill")),
+      locations = gt::cells_body(columns = `Statistical Significance`)
+    ) |>
+    gt::tab_style(
+      style = gt::cell_text(weight = "bold"),
+      locations = gt::cells_column_labels(gt::everything())
+    ) |>
+    gt::cols_hide(columns = sig_fill) |>
+    gt::tab_options(
+      table.width = gt::pct(100),
+      table.align = "center",
+      data_row.padding = gt::px(4)
+    )
+}
+
 
 
 #' ISR example dataset
