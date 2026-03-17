@@ -19,7 +19,7 @@ A data.frame with Rate =  o/n, lower confidence interval limit, and
 upper confidence interval limit
 }
 \description{
-Byar's confidence interval fro counts, crude rates or
+Byar's confidence interval for counts, crude rates or
 indirectly standardised ratios
 }
 \examples{

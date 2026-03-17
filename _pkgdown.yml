@@ -9,3 +9,7 @@ template:
     pkgdown-nav-height: 100px
     base_font: {google: "Open Sans"}
 
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news]
+    right: [search, github, lightswitch]

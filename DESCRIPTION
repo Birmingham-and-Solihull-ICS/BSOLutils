@@ -52,3 +52,4 @@ Remotes:
     r-lib/fs,
     plotly/plotly.R
 URL: https://birmingham-and-solihull-ics.github.io/BSOLutils/
+BugReports: https://github.com/birmingham-and-solihull-ics/BSOLutils/issues, 

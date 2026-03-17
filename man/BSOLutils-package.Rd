@@ -12,6 +12,7 @@ This package contains numerous helper functions. There include functions for con
 Useful links:
 \itemize{
   \item \url{https://birmingham-and-solihull-ics.github.io/BSOLutils/}
+  \item Report bugs at \url{https://github.com/birmingham-and-solihull-ics/BSOLutils/issues,}
 }
 
 }
