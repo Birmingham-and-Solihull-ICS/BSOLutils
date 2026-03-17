@@ -47,24 +47,152 @@
   <main id="main" class="col-md-9">
 <!-- badges: end -->
 <div class="section level1">
-<div class="page-header"><h1 id="bsolutils-">BSOLutils <img src="https://www.birminghamsolihull.icb.nhs.uk/application/files/1316/5651/5354/logo_full_colour_main_lockup.svg" align="right" width="300px"><a class="anchor" aria-label="anchor" href="#bsolutils-"></a>
+<div class="page-header"><h1 id="bsolutils">BSOLutils<a class="anchor" aria-label="anchor" href="#bsolutils"></a>
 </h1></div>
-<p>This repository contains an R package with various helper functions for things like confidence intervals, measures of dispersion, standardisation and other functions.</p>
-<p>Install from GitHub as:</p>
+<p>This repository contains an R package to help with various day-to-day tasks in BSOL ICB BI and Data Sciecne teams. It contains various helper functions for things like:</p>
+<ul>
+<li>confidence intervals</li>
+<li>ICB colour palette functions</li>
+<li>ggplot2 and plotly helpers, themes and colour scales</li>
+<li>SQL conversion functions for estimating data types and lengths</li>
+<li>Dispersion ratios and overdispersion calculations</li>
+<li>Standardisation and inequality comparison ratios</li>
+</ul>
+<p>This package is not released on CRAN, but can be installed from GitHub using the following command:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"https://github.com/Birmingham-and-Solihull-ICS/BSOLutils"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="please-also-consider-the-following">Please also consider the following:<a class="anchor" aria-label="anchor" href="#please-also-consider-the-following"></a>
-</h3>
-<ul>
-<li>Linting your code. This is a formatting process that follows a rule set. We broadly encourage the tidyverse standard, and recommend the <code>lintr</code> package.</li>
-<li>Comment your code to make sure others can follow.</li>
-<li>Consider your naming conventions: we recommend <code>snake case</code> where spaces are replaced by underscores and no capitals are use. E.g. <code>outpatient_referral_data</code>
-</li>
-</ul>
-<p>This repository is dual licensed under the <a href="%5Bhttps://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government v3</a> &amp; MIT. All code and outputs are subject to Crown Copyright.</p>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"https://github.com/Birmingham-and-Solihull-ICS/BSOLutils"</span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level1">
+<h1 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h1>
+<div class="section level2">
+<h2 id="confidence-interval-calcualtions">Confidence interval calcualtions<a class="anchor" aria-label="anchor" href="#confidence-interval-calcualtions"></a>
+</h2>
+<p>We often calculate rates, ratios and standardised methods. We have, broadly, followed PHE / UKHSA guidance on methods, with an exception for using Ulm’s methods for standardised rates.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://birmingham-and-solihull-ics.github.io/BSOLutils/">BSOLutils</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nhs-r-community/NHSRdatasets" class="external-link">NHSRdatasets</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"LOS_model"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#calculate crude and indirectly (Age and LOS) standardised rates (ISR)</span></span>
+<span><span class="va">model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">Death</span> <span class="op">~</span> <span class="va">Age</span> <span class="op">*</span> <span class="va">LOS</span>, data <span class="op">=</span> <span class="va">LOS_model</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Use the predicted risk of death per patient from your model</span></span>
+<span><span class="va">LOS_model</span><span class="op">$</span><span class="va">risk_death</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model1</span>, newdata <span class="op">=</span> <span class="va">LOS_model</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Summarise by organisation</span></span>
+<span><span class="va">LOS_summary</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">LOS_model</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Organisation</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>Patients <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>            Deaths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Death</span><span class="op">)</span>,</span>
+<span>            Predicted_deaths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">risk_death</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add rate calculations</span></span>
+<span><span class="va">LOS_summary</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">LOS_summary</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Crude_Rate <span class="op">=</span> <span class="va">Deaths</span> <span class="op">/</span> <span class="va">Patients</span>,</span>
+<span>         ISR_Rate <span class="op">=</span> <span class="va">Deaths</span> <span class="op">/</span> <span class="va">Predicted_deaths</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calcualting in isolation</span></span>
+<span><span class="fu"><a href="reference/byars_ci.html">byars_ci</a></span><span class="op">(</span><span class="va">LOS_summary</span><span class="op">$</span><span class="va">Deaths</span>, <span class="va">LOS_summary</span><span class="op">$</span><span class="va">Patients</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         Rate    LowerCI   UpperCI</span></span>
+<span><span class="co">#&gt; 1  0.2333333 0.09348102 0.4807754</span></span>
+<span><span class="co">#&gt; 2  0.1666667 0.05371159 0.3889388</span></span>
+<span><span class="co">#&gt; 3  0.2000000 0.07303286 0.4353250</span></span>
+<span><span class="co">#&gt; 4  0.1333333 0.03587168 0.3413584</span></span>
+<span><span class="co">#&gt; 5  0.2333333 0.09348102 0.4807754</span></span>
+<span><span class="co">#&gt; 6  0.1333333 0.03587168 0.3413584</span></span>
+<span><span class="co">#&gt; 7  0.2666667 0.11482302 0.5254667</span></span>
+<span><span class="co">#&gt; 8  0.1666667 0.05371159 0.3889388</span></span>
+<span><span class="co">#&gt; 9  0.1000000 0.02009909 0.2921788</span></span>
+<span><span class="co">#&gt; 10 0.1333333 0.03587168 0.3413584</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/exact_SMR_ci.html">exact_SMR_ci</a></span><span class="op">(</span><span class="va">LOS_summary</span><span class="op">$</span><span class="va">Deaths</span>, <span class="va">LOS_summary</span><span class="op">$</span><span class="va">Predicted_deaths</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         Rate   LowerCI  UpperCI</span></span>
+<span><span class="co">#&gt; 1  1.2425644 0.4995753 2.560158</span></span>
+<span><span class="co">#&gt; 2  0.8745683 0.2839700 2.040951</span></span>
+<span><span class="co">#&gt; 3  1.0480742 0.3846248 2.281216</span></span>
+<span><span class="co">#&gt; 4  0.8385838 0.2284859 2.147108</span></span>
+<span><span class="co">#&gt; 5  1.1651140 0.4684362 2.400580</span></span>
+<span><span class="co">#&gt; 6  0.8034616 0.2189162 2.057181</span></span>
+<span><span class="co">#&gt; 7  1.6297070 0.7035918 3.211172</span></span>
+<span><span class="co">#&gt; 8  1.0475907 0.3401498 2.444727</span></span>
+<span><span class="co">#&gt; 9  0.6153406 0.1268980 1.798286</span></span>
+<span><span class="co">#&gt; 10 0.7128685 0.1942327 1.825226</span></span>
+<span></span>
+<span><span class="co"># Adding in to a table</span></span>
+<span><span class="va">LOS_summary</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">LOS_summary</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Crude_LowerCI <span class="op">=</span> <span class="fu"><a href="reference/byars_ci.html">byars_ci</a></span><span class="op">(</span><span class="va">Deaths</span>, <span class="va">Patients</span><span class="op">)</span><span class="op">$</span><span class="va">LowerCI</span>,</span>
+<span>         Crude_UpperCI <span class="op">=</span> <span class="fu"><a href="reference/byars_ci.html">byars_ci</a></span><span class="op">(</span><span class="va">Deaths</span>, <span class="va">Patients</span><span class="op">)</span><span class="op">$</span><span class="va">UpperCI</span>,</span>
+<span>         ISR_LowerCI <span class="op">=</span> <span class="fu"><a href="reference/exact_SMR_ci.html">exact_SMR_ci</a></span><span class="op">(</span><span class="va">Deaths</span>, <span class="va">Predicted_deaths</span><span class="op">)</span><span class="op">$</span><span class="va">LowerCI</span>,</span>
+<span>         ISR_UpperCI <span class="op">=</span> <span class="fu"><a href="reference/exact_SMR_ci.html">exact_SMR_ci</a></span><span class="op">(</span><span class="va">Deaths</span>, <span class="va">Predicted_deaths</span><span class="op">)</span><span class="op">$</span><span class="va">UpperCI</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Using in a plot</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co"># install.packages(c("dplyr", "tidyr", "stringr"))  # if needed</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">LOS_summary</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">matches</a></span><span class="op">(</span><span class="st">"^(Crude|ISR)_(Rate|LowerCI|UpperCI)$"</span><span class="op">)</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Rate_type"</span>, <span class="st">".value"</span><span class="op">)</span>,</span>
+<span>    names_sep <span class="op">=</span> <span class="st">"_"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Organisation</span>, <span class="va">Rate</span>, <span class="va">Rate_type</span>, <span class="va">LowerCI</span>, <span class="va">UpperCI</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Organisation</span>, colour <span class="op">=</span> <span class="va">Rate_type</span>, y <span class="op">=</span> <span class="va">Rate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_errorbar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>ymax <span class="op">=</span> <span class="va">UpperCI</span>, ymin <span class="op">=</span> <span class="va">LowerCI</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">Rate_type</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/icb_theme_gradient_colour_scales.html">scale_colour_icb</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Example plot of death rates using simulated data"</span>,</span>
+<span>       subtitle <span class="op">=</span> <span class="st">"Crude rate vs. Indirectly Age/LOS standardised"</span>,</span>
+<span>       colour <span class="op">=</span> <span class="st">"Rate type"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/theme_icb.html">theme_icb</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-cis-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="sql-helper-functions">SQL-helper functions<a class="anchor" aria-label="anchor" href="#sql-helper-functions"></a>
+</h2>
+<p>When loading data into SQL Server using R, we can rely on implicit conversation but it is not always right. The function below takes and data.frame input (for example the <code>mtcars</code> demo data) and suggests suitable data types for SQL Server import.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/derive_sql_data_types.html">derive_sql_data_types</a></span><span class="op">(</span><span class="va">LOS_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in .f(.x[[i]], ...): No SQL mapping defined for R class 'ordered'.</span></span>
+<span><span class="co">#&gt; Using varchar(max).</span></span>
+<span><span class="co">#&gt;             ID   Organisation            Age            LOS          Death </span></span>
+<span><span class="co">#&gt;          "int" "varchar(max)"          "int"          "int"          "int" </span></span>
+<span><span class="co">#&gt;     risk_death </span></span>
+<span><span class="co">#&gt;        "float"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="colour-palettes-and-themes">Colour palettes and themes<a class="anchor" aria-label="anchor" href="#colour-palettes-and-themes"></a>
+</h2>
+</div>
+<div class="section level2">
+<h2 id="date-functions">Date functions<a class="anchor" aria-label="anchor" href="#date-functions"></a>
+</h2>
+</div>
+<div class="section level2">
+<h2 id="dispersion">Dispersion<a class="anchor" aria-label="anchor" href="#dispersion"></a>
+</h2>
+</div>
+</div>
+<div class="section level1">
+<h1 id="licence">Licence<a class="anchor" aria-label="anchor" href="#licence"></a>
+</h1>
+<p>This repository is dual licensed under the <a href="%5Bhttps://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government v3</a> &amp; MIT. All code and outputs are subject to Crown Copyright.</p>
+<p><img src="./inst/signature.svg" align="center"></p>
 </div>
 
   </main><aside class="col-md-3"><div class="license">
