@@ -2,8 +2,8 @@ url: https://birmingham-and-solihull-ics.github.io/BSOLutils/
 template:
   bootstrap: 5
   light-switch: true
-  theme: gruvbox-light
-  theme-dark: gruvbox-dark
+  theme:  github-light
+  theme-dark: github-dark
   bslib:
     bootswatch: lumen
     pkgdown-nav-height: 100px
