@@ -8,6 +8,13 @@
 \description{
 This package contains numerous helper functions. There include functions for confidence intervals, predicting SQL data types, ggplot themes and palettes, ploty helpers, binomial thinning, standardisation methods and dispersion metrics.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://birmingham-and-solihull-ics.github.io/BSOLutils/}
+}
+
+}
 \author{
 \strong{Maintainer}: Chris Mainey \email{c.mainey1@nhs.net} (\href{https://orcid.org/0000-0002-3018-6171}{ORCID})
 
