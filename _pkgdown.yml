@@ -13,3 +13,22 @@ navbar:
   structure:
     left:  [intro, reference, articles, tutorials, news]
     right: [search, github, lightswitch]
+    lightswitch: auto
+  components:
+    website:
+      icon: fa-globe
+      href: https://birminghamsolihull.icb.nhs.uk/
+      aria-label: Birmingham and Solihull ICB
+    website:
+      icon: fa-globe
+      href: https://https://blackcountry.icb.nhs.uk/
+      aria-label: Black Country ICB
+    twitter:
+      icon: fa-twitter
+      href: https://x.com/NHSBSol
+      aria-label: BSOL ICB Twitter
+    twitter:
+      icon: fa-twitter
+      href: https://x.com/NHSinBlkCountry
+      aria-label: Black Country ICS Twitter
+
