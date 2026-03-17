@@ -44,8 +44,8 @@ icb_theme_pal("cluster")
 #>         rgb(x[, 1L], x[, 2L], x[, 3L], x[, 4L], maxColorValue = 255)
 #>     else rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)
 #> }
-#> <bytecode: 0x55f91e5625c0>
-#> <environment: 0x55f91eebddc8>
+#> <bytecode: 0x55e66ba6e6a8>
+#> <environment: 0x55e66644e9b0>
 icb_theme_pal("bsol")
 #> function (n) 
 #> {
@@ -54,8 +54,8 @@ icb_theme_pal("bsol")
 #>         rgb(x[, 1L], x[, 2L], x[, 3L], x[, 4L], maxColorValue = 255)
 #>     else rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)
 #> }
-#> <bytecode: 0x55f91e5625c0>
-#> <environment: 0x55f91ee74ea0>
+#> <bytecode: 0x55e66ba6e6a8>
+#> <environment: 0x55e66c10a7b8>
 # or, specify a palette
 icb_theme_pal("ics_orange")
 #> function (n) 
@@ -65,8 +65,8 @@ icb_theme_pal("ics_orange")
 #>         rgb(x[, 1L], x[, 2L], x[, 3L], x[, 4L], maxColorValue = 255)
 #>     else rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)
 #> }
-#> <bytecode: 0x55f91e5625c0>
-#> <environment: 0x55f91ee269e0>
+#> <bytecode: 0x55e66ba6e6a8>
+#> <environment: 0x55e66c0bfc38>
 # a reverse palette
 icb_theme_pal("cluster", TRUE)
 #> function (n) 
@@ -76,6 +76,6 @@ icb_theme_pal("cluster", TRUE)
 #>         rgb(x[, 1L], x[, 2L], x[, 3L], x[, 4L], maxColorValue = 255)
 #>     else rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)
 #> }
-#> <bytecode: 0x55f91e5625c0>
-#> <environment: 0x55f91edb81e0>
+#> <bytecode: 0x55e66ba6e6a8>
+#> <environment: 0x55e66c072590>
 ```

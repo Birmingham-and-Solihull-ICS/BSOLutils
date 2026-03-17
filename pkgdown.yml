@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2026-03-17T11:31Z
+last_built: 2026-03-17T11:35Z
 urls:
   reference: https://birmingham-and-solihull-ics.github.io/BSOLutils/reference
   article: https://birmingham-and-solihull-ics.github.io/BSOLutils/articles

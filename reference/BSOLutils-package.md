@@ -5,6 +5,12 @@ for confidence intervals, predicting SQL data types, ggplot themes and
 palettes, ploty helpers, binomial thinning, standardisation methods and
 dispersion metrics.
 
+## See also
+
+Useful links:
+
+- <https://birmingham-and-solihull-ics.github.io/BSOLutils/>
+
 ## Author
 
 **Maintainer**: Chris Mainey <c.mainey1@nhs.net>
