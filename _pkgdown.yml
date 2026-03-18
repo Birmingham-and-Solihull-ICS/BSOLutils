@@ -19,13 +19,8 @@ navbar:
       icon: fa-globe
       href: https://birminghamsolihull.icb.nhs.uk/
       aria-label: Birmingham and Solihull ICB
-
     twitter:
       icon: fa-twitter
       href: https://x.com/NHSBSol
       aria-label: BSOL ICB Twitter
 
-authors:
-    Chris Mainey
-    Siti Hassan
-    Archie Atack

@@ -11,12 +11,12 @@ Authors@R: c(
   person(
     "Siti", "Hassan",
     email = "siti.hassan@nhs.net",
-    role = "ctb"
+    role = c("aut","ctb")
   ),
   person(
     "Archie", "Atack",
     email = "a.atack@nhs.net",
-    role = "ctb"
+    role = c("aut", "ctb")
   ))
 Maintainer: Chris Mainey <c.mainey1@nhs.net>
 Description: This package contains numerous helper functions.  There include functions for confidence intervals, predicting SQL data types, ggplot themes and palettes, ploty helpers, binomial thinning, standardisation methods and dispersion metrics.
