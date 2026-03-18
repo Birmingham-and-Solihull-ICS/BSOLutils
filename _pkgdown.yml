@@ -15,19 +15,19 @@ navbar:
     right: [search, github, lightswitch]
     lightswitch: auto
   components:
-    website:
+    bsolwebsite:
       icon: fa-globe
       href: https://birminghamsolihull.icb.nhs.uk/
       aria-label: Birmingham and Solihull ICB
-    website:
+    bcwebsite:
       icon: fa-globe
       href: https://https://blackcountry.icb.nhs.uk/
       aria-label: Black Country ICB
-    twitter:
+    bsoltwitter:
       icon: fa-twitter
       href: https://x.com/NHSBSol
       aria-label: BSOL ICB Twitter
-    twitter:
+    bctwitter:
       icon: fa-twitter
       href: https://x.com/NHSinBlkCountry
       aria-label: Black Country ICS Twitter
