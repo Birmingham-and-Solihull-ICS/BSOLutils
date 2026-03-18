@@ -14,7 +14,7 @@ coverage](https://codecov.io/gh/Birmingham-and-Solihull-ICS/BSOLutils/branch/mai
 # BSOLutils
 
 This repository contains an R package to help with various day-to-day
-tasks in BSOL ICB BI and Data Sciecne teams. It contains various helper
+tasks in BSOL ICB BI and Data Science teams. It contains various helper
 functions for things like:
 
 - confidence intervals
