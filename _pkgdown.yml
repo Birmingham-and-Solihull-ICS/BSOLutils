@@ -12,15 +12,12 @@ template:
 navbar:
   structure:
     left:  [intro, reference, articles, tutorials, news]
-    right: [search, github, lightswitch]
+    right: [search, github, website, lightswitch]
     lightswitch: auto
   components:
     website:
       icon: fa-globe
       href: https://birminghamsolihull.icb.nhs.uk/
       aria-label: Birmingham and Solihull ICB
-    twitter:
-      icon: fa-twitter
-      href: https://x.com/NHSBSol
-      aria-label: BSOL ICB Twitter
+
 
