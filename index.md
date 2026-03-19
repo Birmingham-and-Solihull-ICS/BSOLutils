@@ -88,32 +88,7 @@ LOS_summary <-
          ISR_LowerCI = exact_SMR_ci(Deaths, Predicted_deaths)$LowerCI,
          ISR_UpperCI = exact_SMR_ci(Deaths, Predicted_deaths)$UpperCI
   )
-
-# Using in a plot
-library(ggplot2)
-library(tidyr)
-library(stringr)
-
-LOS_summary |> 
-  pivot_longer(
-    cols = matches("^(Crude|ISR)_(Rate|LowerCI|UpperCI)$"),
-    names_to = c("Rate_type", ".value"),
-    names_sep = "_"
-  ) %>%
-  select(Organisation, Rate, Rate_type, LowerCI, UpperCI, everything()) |> 
-  ggplot(aes(x = Organisation, colour = Rate_type, y = Rate)) +
-  geom_point() +
-  geom_errorbar(aes(ymax = UpperCI, ymin = LowerCI)) +
-  facet_grid(~Rate_type, scales = "free_y") +
-  scale_colour_icb() +
-  labs(title = "Example plot of death rates using simulated data",
-       subtitle = "Crude rate vs. Indirectly Age/LOS standardised",
-       colour = "Rate type") +
-  theme_icb() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
-![](reference/figures/README-cis-1.png)
 
 ## SQL-helper functions
 
@@ -134,9 +109,123 @@ derive_sql_data_types(LOS_model)
 
 ## Colour palettes and themes
 
+Colour palettes and associated function for `ggplot2` are included. The
+default is set to the new, clustered ICB graphic. There are other
+palettes, based off the old BSOL ICB styling and style guide colours,
+including hue-based single colour palettes.
+
+Plotting the standardisation example from above, we;ll aply both the ICB
+colour scale and the ICB theme.
+
+``` r
+library(ggplot2)
+library(tidyr)
+library(stringr)
+
+# First pivot it round for easy plotting.
+LOS_summary |> 
+  pivot_longer(
+    cols = matches("^(Crude|ISR)_(Rate|LowerCI|UpperCI)$"),
+    names_to = c("Rate_type", ".value"),
+    names_sep = "_"
+  ) %>%
+  select(Organisation, Rate, Rate_type, LowerCI, UpperCI, everything()) |> 
+  ggplot(aes(x = Organisation, colour = Rate_type, y = Rate)) +
+  geom_point() +
+  geom_errorbar(aes(ymax = UpperCI, ymin = LowerCI)) +
+  facet_grid(~Rate_type, scales = "free_y") +
+  scale_colour_icb() +
+  labs(title = "Example plot of death rates using simulated data",
+       subtitle = "Crude rate vs. Indirectly Age/LOS standardised",
+       colour = "Rate type") +
+  theme_icb() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+![](reference/figures/README-ggplot1-1.png)
+
+Using a colour gradient:
+
+``` r
+# Create a density object
+Age_density <- density(LOS_model$Age, n = 2 ^ 12)
+
+ggplot(data.frame(x = Age_density$x, y = Age_density$y),
+       aes(x = x, y = y)) +
+  geom_line() + 
+  geom_segment(aes(xend = x, yend = 0, colour = x), alpha = 0.2) +
+  {{scale_colour_icb(discrete = FALSE)}} +
+  labs(title = "Age density in LOS_model dataset",
+       subtitle = "Example of ICB colour gradient",
+       x = "Age",
+       y = "Density") +
+  {{theme_icb()}}
+```
+
+![](reference/figures/README-ggplot2-1.png)
+
 ## Date functions
 
+We often work with dates, which can be a bit cumbersome in `R`. These
+functions perform common transformations of dates:
+
+Generating a sequence of years:
+
+``` r
+generate_year_series(2014, 2024, 3)
+#>   from   to k
+#> 1 2014 2016 3
+#> 2 2015 2017 3
+#> 3 2016 2018 3
+#> 4 2017 2019 3
+#> 5 2018 2020 3
+#> 6 2019 2021 3
+#> 7 2020 2022 3
+#> 8 2021 2023 3
+#> 9 2022 2024 3
+# Non-overlapping sequence
+generate_year_series(2014, 2024, 3, overlapping = FALSE)
+#>   from   to k
+#> 1 2014 2016 3
+#> 2 2017 2019 3
+#> 3 2020 2022 3
+```
+
+Functions for pulling out the financial year, e.g. 2025/25 for 30th
+April 2025.
+
+``` r
+f_year(Sys.Date())
+#> [1] "2025/26"
+
+f_year_start(Sys.Date())
+#> [1] "2025-04-01"
+f_year_end(Sys.Date())
+#> [1] "2026-03-31"
+```
+
 ## Dispersion
+
+Dispersion is the ‘variance’ of poisson or binomial models, where
+‘overdispersion’ is common because real-world data shows more
+variability than Poisson or binomial models expect. We can test for it
+using by calculating the dispersion ratio, and we can calculate
+‘between’ variance to pair with ‘within’ variance in random-intercept
+type models.
+
+``` r
+# The dispersion ratio of the model above:
+disp_ratio(model1)
+#> [1] 1.13377
+
+# 1.13377 is not really overdispersed (1 = equidispersion)
+
+# Calculate the dispersion ratio of a series of z-scores
+phi <- phi_func(6, c(1.3,0.75, 1.5, 2, -1.2, -2.2))
+
+phi
+#> [1] 2.46375
+```
 
 # Licence
 

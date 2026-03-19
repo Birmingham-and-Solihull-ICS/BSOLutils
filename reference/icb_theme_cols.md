@@ -47,12 +47,12 @@ icb_theme_cols()
 #>           "#8cedab"           "#4fbff0"           "#fc8700"           "#031d44" 
 #>              purple            nhs_blue         light_slate            charcoal 
 #>           "#b88ce3"           "#005EB8"           "#b2b7b9"           "#2c2825" 
-#>               white      cluster_green1      cluster_green2   cluster_turquoise 
-#>           "#ffffff"           "#28A745"           "#1FA766"           "#1AA6A0" 
-#>   cluster_lightblue        cluster_blue    cluster_darkblue      cluster_purple 
-#>           "#1A92C7"           "#2E6FCA"           "#4E54B0"           "#6C4993" 
-#>  cluster_purplepink cluster_pinkorgange      cluster_orange 
-#>           "#8C4475"           "#B8484E"           "#F16522" 
+#>               white          light_blue      cluster_green1      cluster_green2 
+#>           "#ffffff"           "#4fbff0"           "#28A745"           "#1FA766" 
+#>   cluster_turquoise   cluster_lightblue        cluster_blue    cluster_darkblue 
+#>           "#1AA6A0"           "#1A92C7"           "#2E6FCA"           "#4E54B0" 
+#>      cluster_purple  cluster_purplepink cluster_pinkorgange      cluster_orange 
+#>           "#6C4993"           "#8C4475"           "#B8484E"           "#F16522" 
 # or, just show some colours
 icb_theme_cols("green", "orange", "deep_navy", "nhs_blue")
 #>     green    orange deep_navy  nhs_blue 

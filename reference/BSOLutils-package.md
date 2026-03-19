@@ -19,7 +19,7 @@ Useful links:
 **Maintainer**: Chris Mainey <c.mainey1@nhs.net>
 ([ORCID](https://orcid.org/0000-0002-3018-6171))
 
-Other contributors:
+Authors:
 
 - Siti Hassan <siti.hassan@nhs.net> \[contributor\]
 
