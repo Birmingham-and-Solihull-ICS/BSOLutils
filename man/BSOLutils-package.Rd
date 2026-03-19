@@ -19,7 +19,7 @@ Useful links:
 \author{
 \strong{Maintainer}: Chris Mainey \email{c.mainey1@nhs.net} (\href{https://orcid.org/0000-0002-3018-6171}{ORCID})
 
-Other contributors:
+Authors:
 \itemize{
   \item Siti Hassan \email{siti.hassan@nhs.net} [contributor]
   \item Archie Atack \email{a.atack@nhs.net} [contributor]

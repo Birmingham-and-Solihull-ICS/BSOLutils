@@ -15,7 +15,7 @@ icb_theme_colours <- c(
     white = "#ffffff",
     #light_charcoal = "#9d928a",
     #light_slate = "#b2b7b9",
-    #light_blue = "#abc0e0",
+    light_blue = "#abc0e0",
     #light_red = "#f5b2aa",
 
     #dark_orange = "#7c5f03",

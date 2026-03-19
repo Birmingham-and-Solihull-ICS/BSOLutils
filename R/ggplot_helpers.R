@@ -20,12 +20,14 @@ theme_icb <- function(base_size = 12, base_family = "Open Sans") {
         ggplot2::theme(
             panel.background = element_blank()
             , panel.grid = element_blank()
-            , plot.title = element_text(face = "bold", size = 16)
-            , plot.subtitle = element_text(face = "italic",size = 10)
+            , plot.title = element_text(face = "bold", size = 16, hjust = 0, margin = margin(2,5,4,0))
+            , plot.subtitle = element_text(face = "italic", size = 10, hjust = 0, margin = margin(2,2,4,0))
             , axis.line = element_line(colour = "#808080", linewidth = 0.75)
-            , strip.background = element_rect(fill = "#b2b7b9")
-            #, panel.grid.major = element_line(colour = "#b3b3b3", linewidth = 0.4)
-            #, panel.grid.minor = element_line(colour = "#cfcfcf", linewidth = 0.4)
+            , axis.ticks = element_line(linewidth = 0.15)
+            , strip.background = element_rect(fill = icb_theme_cols("light_slate"))
+            , panel.grid.major = element_line(colour = "#cccccc", linewidth = 0.15)
+            , panel.grid.minor = element_line(colour = "#cccccc", linewidth = 0.15)
+            , panel.spacing = grid::unit(1.5, "lines")
             # panel.grid.major = ggplot2::element_line(colour = "#DDDDDD"),
             # panel.grid.minor = ggplot2::element_blank(),
             # plot.title = ggplot2::element_text(face = "bold", colour = "#333333"),
